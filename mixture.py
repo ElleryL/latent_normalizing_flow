@@ -82,7 +82,6 @@ def train_mixture(train_step,
 
     log_Z_given_x, log_X_given_z = log_prob_z_given_x(flows, num_comp, x_placeholder, log_z_placeholder)
     log_Z = tf.reduce_sum(log_Z_given_x, axis=0)
-    Z = tf.exp(log_Z)
     loss = - tf.reduce_sum(tf.reduce_logsumexp((log_X_given_z + log_z_placeholder), axis=1))
     train_op = tf.train.AdamOptimizer(lr).minimize(loss)
 
