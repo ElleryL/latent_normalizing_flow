@@ -59,8 +59,8 @@ def train_mixture(train_step,
     flows = []
 
     # initialize base
-    # mu = initialization(x,num_comp)
-    mu = np.array([[-5., -5], [5., 5], [5., -5], [-5., 5]], dtype=NP_DTYPE)
+    mu = initialization(x,num_comp)
+
 
     # initialize log_z
     log_z = np.log([1 / num_comp] * num_comp, dtype=NP_DTYPE)
