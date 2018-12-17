@@ -5,7 +5,7 @@ True
 ![True](log/toy/true.png?raw=true "True")
 
 Latent
-![latent](log/toy/latent.png?raw=true "latent")
+![latent](log/toy/latent_flow.png?raw=true "latent")
 
 Baseline
-![baseline](log/toy/baseline.png?raw=true "baseline")
+![baseline](log/toy/flow.png?raw=true "baseline")
