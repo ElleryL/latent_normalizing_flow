@@ -37,7 +37,6 @@ def initialization(x,num_comp):
     return x[inx]
 
 
-
 def train_mixture(train_step,
                   num_comp,
                   dim,
@@ -54,12 +53,14 @@ def train_mixture(train_step,
 
     x_placeholder = tf.placeholder(DTYPE, [batch_size, dim], name="data")
     log_z_placeholder = tf.placeholder(DTYPE, [num_comp], name="log_z")
+    log_z_given_x_placeholder = tf.placeholder(DTYPE, [batch_size, num_comp], name="log_z_given_x")
 
     # initialize normalizing flow
     flows = []
 
     # initialize base
-    mu = initialization(x,num_comp)
+    # mu = initialization(x,num_comp)
+    mu = np.array([[-5., -5], [5., 5], [5., -5], [-5., 5]], dtype=NP_DTYPE)
 
     # initialize log_z
     log_z = np.log([1 / num_comp] * num_comp, dtype=NP_DTYPE)
@@ -81,16 +82,22 @@ def train_mixture(train_step,
         flows.append(Q)
 
     log_Z_given_x, log_X_given_z = log_prob_z_given_x(flows, num_comp, x_placeholder, log_z_placeholder)
-    log_Z = tf.reduce_sum(log_Z_given_x, axis=0)
-    loss = - tf.reduce_sum(tf.reduce_logsumexp((log_X_given_z + log_z_placeholder), axis=1))
+    log_Z = tf.reduce_logsumexp(log_z_given_x_placeholder, axis=0) - tf.log(tf.constant(batch_size, dtype=DTYPE))
+
+    loss = - tf.reduce_sum(tf.reduce_sum(
+        (log_X_given_z + log_z_placeholder - log_z_given_x_placeholder) * tf.exp(log_z_given_x_placeholder), axis=1))
     train_op = tf.train.AdamOptimizer(lr).minimize(loss)
 
     sess.run(tf.global_variables_initializer())
     LOSS = []
     for i in tqdm(range(train_step)):
         # E-step
-        log_z = sess.run(log_Z, feed_dict={x_placeholder: x, log_z_placeholder: log_z})
+        log_z_given_x = sess.run(log_Z_given_x, feed_dict={x_placeholder: x, log_z_placeholder: log_z})
+
         # M-step
-        _, train_loss = sess.run([train_op, loss], feed_dict={x_placeholder: x, log_z_placeholder: log_z})
+        _, train_loss = sess.run([train_op, loss], feed_dict={x_placeholder: x,
+                                                              log_z_placeholder: log_z,
+                                                              log_z_given_x_placeholder: log_z_given_x})
+        log_z = sess.run(log_Z, feed_dict={x_placeholder: x, log_z_given_x_placeholder: log_z_given_x})
         LOSS.append(train_loss)
 
