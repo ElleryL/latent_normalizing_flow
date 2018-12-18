@@ -11,6 +11,8 @@ Baseline
 ![baseline](log/toy/flow.png?raw=true "baseline")
 
 
+Circle Toy Experiment
+
 True
 ![True](log/toy/True_circle.png?raw=true "True")
 
