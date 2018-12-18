@@ -9,3 +9,13 @@ Latent
 
 Baseline
 ![baseline](log/toy/flow.png?raw=true "baseline")
+
+
+True
+![True](log/toy/True_circle.png?raw=true "True")
+
+Latent
+![latent](log/toy/latent_circle.png?raw=true "latent")
+
+Baseline
+![baseline](log/toy/baseline_circle.png?raw=true "baseline")
