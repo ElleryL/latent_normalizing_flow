@@ -12,10 +12,10 @@ Baseline
 
 
 True
-![True](log/toy/True_circle.png ?raw=true "True")
+![True](log/toy/True_circle.png?raw=true "True")
 
 Latent
-![latent](log/toy/latent_circle.png ?raw=true "latent")
+![latent](log/toy/latent_circle.png?raw=true "latent")
 
 Baseline
-![baseline](log/toy/baseline_circle.png ?raw=true "baseline")
+![baseline](log/toy/baseline_circle.png?raw=true "baseline")
