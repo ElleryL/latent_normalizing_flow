@@ -61,8 +61,8 @@ def spectral_norm(w, iteration=1):
    with tf.control_dependencies([u.assign(u_hat)]):
        w_norm = w / sigma
        w_norm = tf.reshape(w_norm, w_shape)
-
-   return w_norm
+   return tf.cond(tf.equal(tf.count_nonzero(w), 0), lambda: w, lambda: w_norm)
+   #return w_norm
 
 class SpectralDense(Layer):
   """Just your regular densely-connected NN layer.
