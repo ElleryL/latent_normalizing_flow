@@ -34,7 +34,11 @@ from tensorflow.python.ops import nn_ops
 from tensorflow.python.ops import standard_ops
 from tensorflow.python.util.tf_export import tf_export
 
-def spectral_norm(w, iteration=1):
+
+def spectral_norm(w):
+    return tf.cond(tf.equal(tf.count_nonzero(w), 0), lambda: w, lambda: apply_spectral_norm(w))
+
+def apply_spectral_norm(w,iteration=1):
    w_shape = w.shape.as_list()
    w = tf.reshape(w, [-1, w_shape[-1]])
 
@@ -57,12 +61,10 @@ def spectral_norm(w, iteration=1):
    v_hat = tf.stop_gradient(v_hat)
 
    sigma = tf.matmul(tf.matmul(v_hat, w), tf.transpose(u_hat))
-
    with tf.control_dependencies([u.assign(u_hat)]):
        w_norm = w / sigma
        w_norm = tf.reshape(w_norm, w_shape)
-   return tf.cond(tf.equal(tf.count_nonzero(w), 0), lambda: w, lambda: w_norm)
-   #return w_norm
+   return w_norm
 
 class SpectralDense(Layer):
   """Just your regular densely-connected NN layer.
