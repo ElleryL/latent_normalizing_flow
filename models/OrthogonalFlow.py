@@ -70,9 +70,17 @@ class Orthogonal_Flow(bijector.Bijector):
 
 
     def _inverse_log_det_jacobian(self, y):
+        '''
+        orthogonal matrix has determinants -1 or 1
+        the log of its abs is zero
+        '''
         return 0.
 
     def _forward_log_det_jacobian(self, x):
+        '''
+        orthogonal matrix has determinants -1 or 1
+        the log of its abs is zero
+        '''
         return 0.
 
 def orthogonal_flow_template(hidden_layers,
